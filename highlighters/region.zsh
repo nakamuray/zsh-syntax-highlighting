@@ -1,3 +1,6 @@
+# disable default region highlight
+zle_highlight+=(region:none)
+
 _zsh_highlight-region() {
   if (( REGION_ACTIVE )); then
     if (( MARK < CURSOR )); then
