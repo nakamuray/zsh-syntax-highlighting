@@ -110,7 +110,7 @@ _zsh_highlight_buffer_modified()
 # Returns 0 if the cursor has moved since _zsh_highlight was last called.
 _zsh_highlight_cursor_moved()
 {
-  ((_ZSH_HIGHLIGHT_PRIOR_CURSOR != $CURSOR))
+  [[ -n $CURSOR ]] && [[ -n $_ZSH_HIGHLIGHT_PRIOR_CURSOR ]] && (($_ZSH_HIGHLIGHT_PRIOR_CURSOR != $CURSOR))
 }
 
 
@@ -156,6 +156,9 @@ for event in ${${(f)"$(zle -la)"}:#(_*|orig-*|.run-help|.which-command)}; do
   fi
 done
 unset event clean_event
+
+# Start highlighting immediately after the creation of a new command line.
+autoload add-zsh-hook && add-zsh-hook precmd _zsh_highlight
 
 # Load highlighters from highlighters directory and check they define required functions.
 for highlighter_dir ($highlighters_dir/*/); do
